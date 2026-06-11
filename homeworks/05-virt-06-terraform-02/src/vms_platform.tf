@@ -29,24 +29,6 @@ variable "vm_web_platform_id" {
   description = "Web VM platform ID"
 }
 
-###variable "vm_web_cores" {
-###  type        = number
-###  default     = 2
-###  description = "Web VM cores"
-###}
-
-###variable "vm_web_memory" {
-###  type        = number
-###  default     = 1
-###  description = "Web VM memory (GB)"
-###}
-
-###variable "vm_web_core_fraction" {
-###  type        = number
-###  default     = 5
-###  description = "Web VM core fraction"
-###}
-
 variable "vm_web_image_family" {
   type        = string
   default     = "ubuntu-2004-lts"
@@ -83,24 +65,6 @@ variable "vm_db_platform_id" {
   default     = "standard-v2"
   description = "DB VM platform ID"
 }
-
-###variable "vm_db_cores" {
-###  type        = number
-###  default     = 2
-###  description = "DB VM cores"
-###}
-
-###variable "vm_db_memory" {
-###  type        = number
-###  default     = 2
-###  description = "DB VM memory (GB)"
-###}
-
-###variable "vm_db_core_fraction" {
-###  type        = number
-### default     = 20
-###  description = "DB VM core fraction"
-#}
 
 variable "vm_db_image_family" {
   type        = string
