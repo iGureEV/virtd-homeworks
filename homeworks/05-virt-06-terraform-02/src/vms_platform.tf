@@ -29,23 +29,23 @@ variable "vm_web_platform_id" {
   description = "Web VM platform ID"
 }
 
-variable "vm_web_cores" {
-  type        = number
-  default     = 2
-  description = "Web VM cores"
-}
+###variable "vm_web_cores" {
+###  type        = number
+###  default     = 2
+###  description = "Web VM cores"
+###}
 
-variable "vm_web_memory" {
-  type        = number
-  default     = 1
-  description = "Web VM memory (GB)"
-}
+###variable "vm_web_memory" {
+###  type        = number
+###  default     = 1
+###  description = "Web VM memory (GB)"
+###}
 
-variable "vm_web_core_fraction" {
-  type        = number
-  default     = 5
-  description = "Web VM core fraction"
-}
+###variable "vm_web_core_fraction" {
+###  type        = number
+###  default     = 5
+###  description = "Web VM core fraction"
+###}
 
 variable "vm_web_image_family" {
   type        = string
@@ -84,26 +84,60 @@ variable "vm_db_platform_id" {
   description = "DB VM platform ID"
 }
 
-variable "vm_db_cores" {
-  type        = number
-  default     = 2
-  description = "DB VM cores"
-}
+###variable "vm_db_cores" {
+###  type        = number
+###  default     = 2
+###  description = "DB VM cores"
+###}
 
-variable "vm_db_memory" {
-  type        = number
-  default     = 2
-  description = "DB VM memory (GB)"
-}
+###variable "vm_db_memory" {
+###  type        = number
+###  default     = 2
+###  description = "DB VM memory (GB)"
+###}
 
-variable "vm_db_core_fraction" {
-  type        = number
-  default     = 20
-  description = "DB VM core fraction"
-}
+###variable "vm_db_core_fraction" {
+###  type        = number
+### default     = 20
+###  description = "DB VM core fraction"
+#}
 
 variable "vm_db_image_family" {
   type        = string
   default     = "ubuntu-2004-lts"
   description = "DB VM image family"
+}
+
+
+### -----------------------------------------------
+### Общие параметры ВМ
+
+variable "vms_resources" {
+  type = map(object({
+    cores         = number
+    memory        = number
+    core_fraction = number
+  }))
+  default = {
+    web = {
+      cores         = 2
+      memory        = 1
+      core_fraction = 5
+    }
+    db = {
+      cores         = 2
+      memory        = 2
+      core_fraction = 20
+    }
+  }
+  description = "VM resources configuration"
+}
+
+variable "metadata" {
+  type = map(any)
+  default = {
+    serial-port-enable = "1"
+    ssh-keys           = "ubuntu:<vms_ssh_root_key из personal.auto.tfvars>"
+  }
+  description = "Metadata for all VMs"
 }
