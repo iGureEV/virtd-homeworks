@@ -96,12 +96,3 @@ variable "vms_resources" {
   }
   description = "VM resources configuration"
 }
-
-variable "metadata" {
-  type = map(any)
-  default = {
-    serial-port-enable = "1"
-    ssh-keys           = "ubuntu:<vms_ssh_root_key из personal.auto.tfvars>"
-  }
-  description = "Metadata for all VMs"
-}
