@@ -177,6 +177,8 @@ _**Выполнение**_:
   ![Выполнение сценария и просмотр результата](Задание_04_1.png)  
   ![Выполнение сценария и просмотр результата](Задание_04_2.png)   
 
+  IP адреса не прописаны потому что нет внешних IP-адресов, машины ходят в сеть через NAT-шлюз, из-за блокировки создания внешних IP-адресов. Ожидаю увеличения лимита через поддержку.
+
 ------
 ------
 
@@ -208,6 +210,13 @@ _**Выполнение**_:
 ]
 ```
 Приложите скриншот вывода команды ```terrafrom output```.
+
+------
+
+_**Выполнение**_:  
+1. Создал `outputs.tf` c `all_vms` для вывода динамического словаря по ВМ.
+
+  ![Выполнение сценария и просмотр результата](Задание_05_1.png) 
 
 ------
 ------
@@ -309,4 +318,59 @@ ${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"] platform
 
 * задание выполнено частично или не выполнено вообще,
 * в логике выполнения заданий есть противоречия и существенные недостатки. 
+
+------
+------
+
+### Заметки
+
+#### Установка Terraform и провайдеров вручную
+
+**Terraform 1.15.6:**
+
+```bash
+# Скачать архив
+wget https://hashicorp-releases.yandexcloud.net/terraform/1.15.6/terraform_1.15.6_linux_amd64.zip
+
+# Распаковать
+unzip terraform_1.15.6_linux_amd64.zip
+
+# Переместить в PATH
+sudo mv terraform /usr/local/bin/
+
+# Проверить
+terraform --version
+```
+
+**Провайдер Yandex Cloud 0.116.0:**
+
+```bash
+# Создать директорию для плагинов
+mkdir -p ~/.terraform.d/plugins/registry.terraform.io/yandex-cloud/yandex/0.116.0/linux_amd64/
+
+# Скачать плагин
+wget https://hashicorp-releases.yandexcloud.net/terraform-provider-yandex/0.116.0/terraform-provider-yandex_0.116.0_linux_amd64.zip
+
+# Распаковать
+unzip terraform-provider-yandex_0.116.0_linux_amd64.zip -d ~/.terraform.d/plugins/registry.terraform.io/yandex-cloud/yandex/0.116.0/linux_amd64/
+
+# Сделать исполняемым
+chmod +x ~/.terraform.d/plugins/registry.terraform.io/yandex-cloud/yandex/0.116.0/linux_amd64/terraform-provider-yandex_v0.116.0
+```
+
+**Провайдер local 2.9.0:**
+
+```bash
+# Создать директорию для плагина
+mkdir -p ~/.terraform.d/plugins/registry.terraform.io/hashicorp/local/2.9.0/linux_amd64/
+
+# Скачать плагин
+wget https://hashicorp-releases.yandexcloud.net/terraform-provider-local/2.9.0/terraform-provider-local_2.9.0_linux_amd64.zip
+
+# Распаковать
+unzip terraform-provider-local_2.9.0_linux_amd64.zip -d ~/.terraform.d/plugins/registry.terraform.io/hashicorp/local/2.9.0/linux_amd64/
+
+# Сделать исполняемым
+chmod +x ~/.terraform.d/plugins/registry.terraform.io/hashicorp/local/2.9.0/linux_amd64/terraform-provider-local_v2.9.0_x5
+```
 
