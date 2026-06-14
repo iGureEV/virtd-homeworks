@@ -6,14 +6,15 @@ resource "yandex_compute_instance" "web" {
   zone        = var.default_zone
 
   resources {
-    cores         = 2
-    memory        = 2
-    core_fraction = 5
+    cores         = var.vms_resources["count_vm"].cores
+    memory        = var.vms_resources["count_vm"].memory
+    core_fraction = var.vms_resources["count_vm"].core_fraction
   }
 
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.image_id
+      size     = var.vms_resources["count_vm"].disk_volume
     }
   }
 
