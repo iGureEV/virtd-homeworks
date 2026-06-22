@@ -89,3 +89,17 @@ variable "packages" {
   description = "Список пакетов для установки"
 }
 
+###s3 vars
+
+variable "storage_access_key" {
+  type        = string
+  default     = ""
+  description = "Статический ключ доступа для S3 (access key)"
+}
+
+variable "storage_secret_key" {
+  type        = string
+  default     = ""
+  description = "Статический ключ доступа для S3 (secret key)"
+}
+

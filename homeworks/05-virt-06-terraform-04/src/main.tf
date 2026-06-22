@@ -50,6 +50,20 @@ module "analytics_vm" {
   }
 }
 
+
+module "s3_bucket" {
+  source = "git::https://github.com/terraform-yc-modules/terraform-yc-s3"
+
+  bucket_name = "terraform-state-netology"
+  max_size    = 1073741824  # 1 ГБ
+  acl         = "private"
+
+  versioning = {
+    enabled = true
+  }
+}
+
+
 #Пример передачи cloud-config в ВМ для демонстрации №3
 data "template_file" "cloudinit" {
   template = file("./cloud-init.yml")
