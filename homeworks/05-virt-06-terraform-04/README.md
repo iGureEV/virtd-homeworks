@@ -99,6 +99,42 @@ module "vpc_dev" {
 ```
 
 ------
+
+_**Выполнение**_:  
+1. Создан каталог `vpc` с файлами `main.tf`, `outputs.tf`, `variables.tf`
+2. Попытка выполнения `terraform init` очень долго заканчивалась ошибкой, которую не понятно как решать:
+    ```sh
+    ➜  src git:(05-virt-06-terraform-04) ✗ terraform init               
+    Initializing modules...
+    Initializing provider plugins found in the configuration...
+    - Reusing previous version of yandex-cloud/yandex from the dependency lock file
+    - Finding latest version of hashicorp/yandex...
+    - Reusing previous version of hashicorp/template from the dependency lock file
+    - Using previously-installed yandex-cloud/yandex v0.116.0
+    - Using previously-installed hashicorp/template v2.2.0
+    ╷
+    │ Error: Invalid provider registry host
+    │ 
+    │ The host "registry.terraform.io" given in provider source address "registry.terraform.io/hashicorp/yandex" does not offer a Terraform provider registry.
+    ╵
+    ➜  src git:(05-virt-06-terraform-04) ✗ 
+    ```  
+    Перепробовал разные версии как `terraform` так и `yandex-cloud/yandex`.  
+    Пробовал выполнять работу под другим пользователем и на другой вартуалке с чистым окружением.  
+    В итоге помогло создание файла `vpc\providers.tf`.  
+
+    Демонстрация ошибки и успешного выполнения:  
+    ![Демонстрация ошибки и успешного выполнения](task_02_1.png)  
+
+    Демонстрация сети и её использования ВМ:  
+    ![Сети](task_02_2.png)  
+    ![ВМ](task_02_3.png)  
+
+3. Установка `terraform-docs` и генерация документации `terraform-docs markdown vpc/ > vpc/README.md`:
+
+    ![Генерация документации](task_02_4.png) 
+
+------
 ------
 
 ### Задание 3
@@ -107,6 +143,11 @@ module "vpc_dev" {
 3. Полностью удалите из стейта модуль vm.
 4. Импортируйте всё обратно. Проверьте terraform plan. Значимых(!!) изменений быть не должно.
 Приложите список выполненных команд и скриншоты процессы.
+
+------
+
+_**Выполнение**_:  
+1. 
 
 ------
 ------

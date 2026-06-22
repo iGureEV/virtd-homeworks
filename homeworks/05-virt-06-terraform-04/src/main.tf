@@ -1,30 +1,20 @@
 #создаем облачную сеть
-resource "yandex_vpc_network" "develop" {
-  name = var.network_name
-}
-
-#создаем подсеть
-resource "yandex_vpc_subnet" "develop_a" {
-  name           = "${var.network_name}-a-${var.zone}"
-  zone           = var.zone
-  network_id     = yandex_vpc_network.develop.id
-  v4_cidr_blocks = var.subnet_a_cidr
-}
-
-resource "yandex_vpc_subnet" "develop_b" {
-  name           = "${var.network_name}-b-${var.zone}"
-  zone           = var.zone
-  network_id     = yandex_vpc_network.develop.id
-  v4_cidr_blocks = var.subnet_b_cidr
+module "vpc_dev" {
+  source = "./vpc"
+  cloud_id = var.cloud_id
+  folder_id = var.folder_id
+  vpc_name = var.network_name
+  default_zone = var.zone
+  default_cidr = var.subnet_a_cidr
 }
 
 
 module "marketing_vm" {
   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
   env_name       = "marketing"
-  network_id     = yandex_vpc_network.develop.id
-  subnet_zones   = [var.zone]
-  subnet_ids     = [yandex_vpc_subnet.develop_a.id, yandex_vpc_subnet.develop_b.id]
+  network_id     = module.vpc_dev.network_id
+  subnet_zones   = [module.vpc_dev.subnet_zone]
+  subnet_ids     = [module.vpc_dev.subnet_id]
   instance_name  = "web"
   public_ip      = var.public_ip
   platform       = var.platform_id
@@ -43,9 +33,9 @@ module "marketing_vm" {
 module "analytics_vm" {
   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
   env_name       = "analytics"
-  network_id     = yandex_vpc_network.develop.id
-  subnet_zones   = [var.zone]
-  subnet_ids     = [yandex_vpc_subnet.develop_b.id]
+  network_id     = module.vpc_dev.network_id
+  subnet_zones   = [module.vpc_dev.subnet_zone]
+  subnet_ids     = [module.vpc_dev.subnet_id]
   instance_name  = "web"
   public_ip      = var.public_ip
   platform       = var.platform_id
