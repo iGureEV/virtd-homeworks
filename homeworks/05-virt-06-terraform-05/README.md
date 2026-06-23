@@ -152,6 +152,7 @@ Lock-файл создается автоматически в том же S3 bu
     git checkout -b 05-virt-06-terraform-04-terraform-05
     git push origin 05-virt-06-terraform-04-terraform-05
     ```
+    Ветка с изменёнными файлами выполнения задания - [05-virt-06-terraform-04-terraform-05](https://github.com/iGureEV/virtd-homeworks/tree/05-virt-06-terraform-04-terraform-05/homeworks).
 
 2. В задании 6 в ДЗ 4 был создан S3 bucket в Yandex Cloud
 
@@ -177,12 +178,19 @@ Lock-файл создается автоматически в том же S3 bu
 
     ![YC CLI S3 bucket](task_02_04.png)
 
-4. Сохранил ключ в файл `~/.aws/credentials` (_альтернатива - переменные окружения_) и перенёс стейт
+4. Закоммитил изменения в ветку [05-virt-06-terraform-04-terraform-05](https://github.com/iGureEV/virtd-homeworks/tree/05-virt-06-terraform-04-terraform-05/homeworks)
+5. Сохранил ключ в файл `~/.aws/credentials` (_альтернатива - переменные окружения_) и перенёс стейт
 
     ![YC CLI S3 bucket](task_02_05.png)
     ![YC CLI S3 bucket](task_02_06.png)
 
-5. 1
+5. Запустил в одном терминале `terraform plan` и одновременно в другом `terraform apply` (запуск `terraform console` не давал блокировку)
+
+    ![YC CLI S3 bucket](task_02_07.png)
+
+6. Попробовал снять блокировку командой `terraform force-unlock <LOCK_ID>`, но она уже была снята из-за завершения операции, однако принцип я понял - должна появиться `terraform state has been success unlocked!` (по инфе из сети).
+
+    ![YC CLI S3 bucket](task_02_08.png)
 
 ### Задание 3  
 
