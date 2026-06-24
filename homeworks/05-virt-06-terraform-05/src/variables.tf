@@ -31,27 +31,48 @@ variable "vpc_name" {
   description = "VPC network&subnet name"
 }
 
-###common vars
-
-variable "vms_ssh_root_key" {
+variable "public_key" {
   type        = string
-  default     = "your_ssh_ed25519_key"
+  default     = ""
   description = "ssh-keygen -t ed25519"
 }
 
-###example vm_web var
-variable "vm_web_name" {
+###s3 vars
+
+variable "storage_access_key" {
   type        = string
-  default     = "netology-develop-platform-web"
-  description = "example vm_web_ prefix"
+  default     = ""
+  description = "Статический ключ доступа для S3 (access key)"
 }
 
-###example vm_db var
-variable "vm_db_name" {
+variable "storage_secret_key" {
   type        = string
-  default     = "netology-develop-platform-db"
-  description = "example vm_db_ prefix"
+  default     = ""
+  description = "Статический ключ доступа для S3 (secret key)"
 }
 
 
 
+### задача 4
+
+variable "ip_address" {
+  type        = string
+  description = "ip-адрес"
+  default     = "192.168.0.1"
+
+  validation {
+    condition     = can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", var.ip_address))
+    error_message = "Некорректный IP-адрес"
+  }
+}
+
+variable "ip_list" {
+  type        = list(string)
+  description = "список ip-адресов"
+  default     = ["192.168.0.1", "1.1.1.1", "127.0.0.1"]
+
+  validation {
+    condition     = alltrue([for ip in var.ip_list : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip))])
+    error_message = "Один из IP-адресов некорректен"
+  }
+}

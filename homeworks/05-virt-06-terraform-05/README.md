@@ -137,6 +137,56 @@
 Это упрощает настройку - больше не нужно создавать отдельную базу данных (YDB в режиме DynamoDB) для хранения блокировок.
 Lock-файл создается автоматически в том же S3 bucket рядом с state-файлом с именем `<key>.lock.info`.
 
+------
+
+**Выполнение**:
+
+1. Сделал ветку 'terraform-05' из ветки 'terraform-04' (у меня они назывались иначе, так что адаптировал команды).
+
+    ```bash
+    git checkout 05-virt-06-terraform-04
+    git checkout -b 05-virt-06-terraform-04-terraform-05
+    git push origin 05-virt-06-terraform-04-terraform-05
+    ```
+    Ветка с изменёнными файлами выполнения задания - [05-virt-06-terraform-04-terraform-05](https://github.com/iGureEV/virtd-homeworks/tree/05-virt-06-terraform-04-terraform-05/homeworks).
+
+2. В задании 6 в ДЗ 4 был создан S3 bucket в Yandex Cloud
+
+    Проверен альтернативный вариант через YC CLI:
+
+    ```bash
+    yc storage bucket create --name terraform-state-netology2 --max-size 1073741824
+    ```
+    ![YC CLI S3 bucket](task_02_02.png)
+    ![YC CLI S3 bucket](task_02_03.png)
+
+3. Создал сервисный аккаунт, дал права редактирования на хранилище и статический ключ
+
+    ```bash
+    yc iam service-account create --name tf-netology-editor
+
+    SA_ID=$(yc iam service-account get --name tf-netology-editor --format json | jq -r '.id')
+
+    yc resource-manager folder add-access-binding <folder_id> --role storage.editor --subject serviceAccount:$SA_ID
+
+    yc iam access-key create --service-account-name tf-netology-editor
+    ```
+
+    ![YC CLI S3 bucket](task_02_04.png)
+
+4. Закоммитил изменения в ветку [05-virt-06-terraform-04-terraform-05](https://github.com/iGureEV/virtd-homeworks/tree/05-virt-06-terraform-04-terraform-05/homeworks)
+5. Сохранил ключ в файл `~/.aws/credentials` (_альтернатива - переменные окружения_) и перенёс стейт
+
+    ![YC CLI S3 bucket](task_02_05.png)
+    ![YC CLI S3 bucket](task_02_06.png)
+
+5. Запустил в одном терминале `terraform plan` и одновременно в другом `terraform apply` (запуск `terraform console` не давал блокировку)
+
+    ![YC CLI S3 bucket](task_02_07.png)
+
+6. Попробовал снять блокировку командой `terraform force-unlock <LOCK_ID>`, но она уже была снята из-за завершения операции, однако принцип я понял - должна появиться `terraform state has been success unlocked!` (по инфе из сети).
+
+    ![YC CLI S3 bucket](task_02_08.png)
 
 ------
 ------
@@ -150,6 +200,38 @@ Lock-файл создается автоматически в том же S3 bu
 5. Пришлите ссылку на PR для ревью. Вливать код в 'terraform-05' не нужно.
 
 ------
+
+**Выполнение**:
+
+1. Сделал ветку 'terraform-hotfix' из ветки 'terraform-05' (у меня они назывались иначе, так что адаптировал команды).
+
+    ```bash
+    git checkout 05-virt-06-terraform-04-terraform-05
+    git checkout -b 05-virt-06-terraform-04-terraform-05-terraform-hotfix
+    git push origin 05-virt-06-terraform-04-terraform-05-terraform-hotfix
+    ```
+    Ветка с изменёнными файлами выполнения задания - [05-virt-06-terraform-04-terraform-05](https://github.com/iGureEV/virtd-homeworks/tree/05-virt-06-terraform-04-terraform-05-terraform-hotfix/homeworks).
+
+2. Были исправлены следующие ошибки (возможно лишнее, но пусть будет):
+
+    **tflint**
+    - В `src/main.tf` - для yandex_compute_instance и terraform-yc-s3 были указаны значения ref
+    - В `src/variables.tf` - удалены переменные `subnet_b_cidr` и `image_family`
+    - В `demonstration1/vms/main.tf` - для yandex_compute_instance указано значение ref и версия для template
+    - В `demonstration1/vms/providers.tf` - указана версия для yandex
+    - В `demonstration1/vms/variables.tf` - удалены переменные `public_key`
+
+    **checkov**
+    - В `src/main.tf` для `terraform-yc-s3` была указана версия, а чеков потребовал hash commit
+
+    Найденные ошибки:
+    ![Найденные ошибки](task_03_01.png)
+    Ошибок больше нет:
+    ![Исправленные ошибки](task_03_02.png)
+    Проверка плана:
+    ![Проверка плана](task_03_03.png)
+
+------
 ------
 
 ### Задание 4
@@ -158,6 +240,15 @@ Lock-файл создается автоматически в том же S3 bu
 
 - type=string, description="ip-адрес" — проверка, что значение переменной содержит верный IP-адрес с помощью функций cidrhost() или regex(). Тесты:  "192.168.0.1" и "1920.1680.0.1";
 - type=list(string), description="список ip-адресов" — проверка, что все адреса верны. Тесты:  ["192.168.0.1", "1.1.1.1", "127.0.0.1"] и ["192.168.0.1", "1.1.1.1", "1270.0.0.1"].
+
+------
+
+**Выполнение**:
+
+1. В `variables.tf` описал переменные `ip_address` и `ip_list` с валидацией значений
+2. Проверил обработку верных и неверных значений
+
+    ![Проверка](task_04_01.png)
 
 ------
 ------
@@ -244,7 +335,3 @@ variable "in_the_end_there_can_be_only_one" {
 
 * задание выполнено частично или не выполнено вообще,
 * в логике выполнения заданий есть противоречия и существенные недостатки. 
-
-
-
-
