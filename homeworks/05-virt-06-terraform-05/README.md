@@ -141,7 +141,7 @@ Lock-файл создается автоматически в том же S3 bu
 
 **Выполнение**:
 
-1. Сделал ветку 'terraform-05' из ветки 'terraform-04'.
+1. Сделал ветку 'terraform-05' из ветки 'terraform-04' (у меня они назывались иначе, так что адаптировал команды).
 
     ```bash
     git checkout 05-virt-06-terraform-04
@@ -188,7 +188,6 @@ Lock-файл создается автоматически в том же S3 bu
 
     ![YC CLI S3 bucket](task_02_08.png)
 
-
 ------
 ------
 
@@ -199,6 +198,34 @@ Lock-файл создается автоматически в том же S3 bu
 3. Откройте новый pull request 'terraform-hotfix' --> 'terraform-05'. 
 4. Вставьте в комментарий PR результат анализа tflint и checkov, план изменений инфраструктуры из вывода команды terraform plan.
 5. Пришлите ссылку на PR для ревью. Вливать код в 'terraform-05' не нужно.
+
+------
+
+**Выполнение**:
+
+1. Сделал ветку 'terraform-hotfix' из ветки 'terraform-05' (у меня они назывались иначе, так что адаптировал команды).
+
+    ```bash
+    git checkout 05-virt-06-terraform-04-terraform-05
+    git checkout -b 05-virt-06-terraform-04-terraform-05-terraform-hotfix
+    git push origin 05-virt-06-terraform-04-terraform-05-terraform-hotfix
+    ```
+    Ветка с изменёнными файлами выполнения задания - [05-virt-06-terraform-04-terraform-05](https://github.com/iGureEV/virtd-homeworks/tree/05-virt-06-terraform-04-terraform-05-terraform-hotfix/homeworks).
+
+2. Были исправлены следующие ошибки (возможно лишнее, но пусть будет):
+
+    **tflint**
+    - В `src/main.tf` - для yandex_compute_instance и terraform-yc-s3 были указаны значения ref
+    - В `src/variables.tf` - удалены переменные `subnet_b_cidr` и `image_family`
+    - В `demonstration1/vms/main.tf` - для yandex_compute_instance указано значение ref и версия для template
+    - В `demonstration1/vms/providers.tf` - указана версия для yandex
+    - В `demonstration1/vms/variables.tf` - удалены переменные `public_key`
+
+    **checkov**
+    - В `src/main.tf` для `terraform-yc-s3` была указана версия, а чеков потребовал hash commit
+
+    ![Найденные ошибки](task_03_01.png)
+    ![Исправленные ошибки](task_03_02.png)
 
 ------
 ------

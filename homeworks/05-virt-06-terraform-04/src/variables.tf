@@ -44,19 +44,7 @@ variable "subnet_a_cidr" {
   description = "CIDR блок подсети A"
 }
 
-variable "subnet_b_cidr" {
-  type        = list(string)
-  default     = ["10.0.2.0/24"]
-  description = "CIDR блок подсети B"
-}
-
 ###vm vars
-
-variable "image_family" {
-  type        = string
-  default     = "ubuntu-2004-lts"
-  description = "Семейство образа для ВМ"
-}
 
 variable "public_ip" {
   type        = bool
