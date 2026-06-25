@@ -2,9 +2,14 @@ terraform {
   required_providers {
     yandex = {
       source = "yandex-cloud/yandex"
+      version = ">= 0.116.0"
+    }
+    vault = {
+      source  = "hashicorp/vault"
+      version = ">= 5.10.0"
     }
   }
-  required_version = "~>1.12.0"
+  required_version = "~>1.15.0"
 }
 
 provider "yandex" {

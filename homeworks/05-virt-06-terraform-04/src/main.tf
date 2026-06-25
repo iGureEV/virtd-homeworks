@@ -10,7 +10,7 @@ module "vpc_dev" {
 
 
 module "marketing_vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=f6638dd3c094d9a2ea7159cb096c29052761e447"
   env_name       = "marketing"
   network_id     = module.vpc_dev.network_id
   subnet_zones   = [module.vpc_dev.subnet_zone]
@@ -31,7 +31,7 @@ module "marketing_vm" {
 }
 
 module "analytics_vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=f6638dd3c094d9a2ea7159cb096c29052761e447"
   env_name       = "analytics"
   network_id     = module.vpc_dev.network_id
   subnet_zones   = [module.vpc_dev.subnet_zone]
@@ -52,7 +52,7 @@ module "analytics_vm" {
 
 
 module "s3_bucket" {
-  source = "git::https://github.com/terraform-yc-modules/terraform-yc-s3"
+  source = "git::https://github.com/terraform-yc-modules/terraform-yc-s3?ref=e4017d77de83fe105604fa7b012bc809a77c2fa2"
 
   bucket_name = "terraform-state-netology"
   max_size    = 1073741824  # 1 ГБ
