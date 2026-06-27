@@ -1,0 +1,4 @@
+cloud_id    = "cloud_id"
+folder_id   = "folder_id"
+public_key  = "публичный_ssh_ключ"
+db_password = "пароль_для_бд"
