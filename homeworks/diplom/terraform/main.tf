@@ -63,7 +63,7 @@ resource "yandex_vpc_security_group" "this" {
 
   ingress {
     protocol       = "TCP"
-    port           = 5000
+    port           = 8090
     v4_cidr_blocks = ["0.0.0.0/0"]
     description    = "FastAPI"
   }
